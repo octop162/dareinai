@@ -23,9 +23,9 @@ $(function () {
  * @returns
  */
 function showAbsentees(membersObject) {
-  // 不明エラー処理
+  // エラー処理
   if (membersObject === undefined) {
-    showMessage("<li>エラーが発生しました。</li>");
+    showMessage("<li>meetのURLで実行してください。</li>");
     return;
   }
   // メンバー取得
@@ -92,13 +92,12 @@ function showArrayList(messages) {
 function saveMembersList(text) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     let url = tabs[0].url;
-    let domain = url.split("/")[2];
-    let meet_id = url.split("/")[3];
-    if (domain !== MEET_DOMAIN) {
-      console.log(`skip: ${domain}`);
+    if (!isMeetURL(url)) {
+      console.log(`skip: ${url}`);
       showMessage("<li>meet以外のURLでは保存できません。</li>");
       return;
     }
+    let meet_id = url.split("/")[3];
     chrome.storage.local.set({ [meet_id]: text }, function () {
       console.log("save:" + text);
       showMessage("<li>保存しました。</li>");
@@ -114,12 +113,11 @@ function saveMembersList(text) {
 function loadMembersList() {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     let url = tabs[0].url;
-    let domain = url.split("/")[2];
-    let meet_id = url.split("/")[3];
-    if (domain !== MEET_DOMAIN) {
-      console.log(`skip: ${domain}`);
+    if (!isMeetURL(url)) {
+      console.log(`skip: ${url}`);
       return;
     }
+    let meet_id = url.split("/")[3];
     chrome.storage.local.get([meet_id], function (text) {
       if (Object.values(text).length === 0) {
         showMessage(`<li>${meet_id}にデータはありません。</li>`);
@@ -130,4 +128,17 @@ function loadMembersList() {
       showMessage(`<li>${meet_id}をロードしました。</li>`);
     });
   });
+}
+
+/**
+ * meetのURLかどうかを判断
+ * meetのトップページもfalseとする
+ * @param {string} URL
+ * @returns boolean meetの個別URLならtrue
+ */
+function isMeetURL(url) {
+  let domain = url.split("/")[2];
+  let meet_id = url.split("/")[3];
+  let isMeetURL = domain === MEET_DOMAIN && meet_id !== "";
+  return isMeetURL;
 }
