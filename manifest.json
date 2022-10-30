@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "だれいない",
   "version": "0.0.1",
-  "description": "誰が居ないかを通知する拡張機能",
+  "description": "誰が居ないかを通知する拡張機能。",
   "content_scripts": [{
     "matches": ["https://meet.google.com/*"],
     "js": [
@@ -15,5 +15,5 @@
   "icons": {
     "128": "icon128.png"
   },
-  "permissions": ["activeTab", "storage", "tabs"]
+  "permissions": ["storage"]
 }
