@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: gray;
+      }
+      input {
+        box-sizing: border-box;
+      }
+      #wrap {
+        padding: 1px;
+      }
+      #message {
+        font-weight: bold;
+      }
+      .box {
+        background-color: #eee;
+        border-bottom: 1px solid gray;
+        padding: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="box">
+        <button id="confirm">不在確認</button>
+        <button id="save">設定保存</button>
+      </div>
+      <div class="box">
+        <h3>メンバー</h3>
+        <br />
+        <textarea cols="50" rows="10" id="participants"></textarea>
+      </div>
+      <div class="box">
+        <h3>いないひと</h3>
+        <ul id="message"></ul>
+      </div>
+    </div>
+    <script src="jquery.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
