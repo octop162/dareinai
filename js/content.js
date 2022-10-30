@@ -1,5 +1,6 @@
 /**
- * ポップアップからメッセージを受け取り、メンバーリストを返す
+ * ポップアップからメッセージを受け取り、メンバーリストを配列として返す
+ * HTML構造が変化した場合ここのセレクタを修正する
  */
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   if (message.action === "GET_MEMBERS") {
