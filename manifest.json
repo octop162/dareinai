@@ -12,5 +12,8 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "permissions": ["activeTab", "storage", "tabs"],
+  "icons": {
+    "128": "icon128.png"
+  },
+  "permissions": ["activeTab", "storage", "tabs"]
 }
