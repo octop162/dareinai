@@ -1,3 +1,5 @@
+const MEET_DOMAIN = "meet.google.com";
+
 $(function () {
   // ポップアップ表示時にローカルストレージからメンバーをロード
   loadMembersList();
@@ -83,21 +85,49 @@ function showArrayList(messages) {
 
 /**
  * ローカルストレージに保存する
+ * meet以外は無視する
+ * URLごとに個別に保存
  * @param {string} text 保存したい文字列
  */
 function saveMembersList(text) {
-  chrome.storage.local.set({ members: text }, function () {
-    console.log("save:" + text);
-    showMessage("<li>保存しました。</li>");
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    let url = tabs[0].url;
+    let domain = url.split("/")[2];
+    let meet_id = url.split("/")[3];
+    if (domain !== MEET_DOMAIN) {
+      console.log(`skip: ${domain}`);
+      showMessage("<li>meet以外のURLでは保存できません。</li>");
+      return;
+    }
+    chrome.storage.local.set({ [meet_id]: text }, function () {
+      console.log("save:" + text);
+      showMessage("<li>保存しました。</li>");
+    });
   });
 }
 
 /**
  * ローカルストレージから復元する
+ * meet以外は無視する
+ * URLごとに個別に保存
  */
 function loadMembersList() {
-  chrome.storage.local.get(["members"], function (text) {
-    console.log("load:" + text["members"]);
-    $("#participants").val(text["members"]);
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    let url = tabs[0].url;
+    let domain = url.split("/")[2];
+    let meet_id = url.split("/")[3];
+    if (domain !== MEET_DOMAIN) {
+      console.log(`skip: ${domain}`);
+      return;
+    }
+    chrome.storage.local.get([meet_id], function (text) {
+      if (Object.values(text).length === 0) {
+        showMessage(`<li>${meet_id}にデータはありません。</li>`);
+        return;
+      }
+      console.log("load:" + text[meet_id]);
+      $("#participants").val(text[meet_id]);
+      showMessage(`<li>${meet_id}をロードしました。</li>`);
+    });
   });
 }

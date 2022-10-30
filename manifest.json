@@ -15,5 +15,6 @@
   "icons": {
     "128": "icon128.png"
   },
-  "permissions": ["storage"]
+  "permissions": ["storage", "tabs"],
+  "options_page": "options.html"
 }
