@@ -1,5 +1,7 @@
 # だれいない
 
+![dareinai-logo](icons/icon128.png)
+
 ## 特徴
 
 - meet で誰が居ないかを通知する拡張機能
