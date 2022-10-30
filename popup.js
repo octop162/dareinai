@@ -36,7 +36,7 @@ function showAbsentees(membersObject) {
   let participants = $("#participants").val().split("\n");
   console.dir(participants);
   if (participants.length === 0 || participants[0] === "") {
-    showMessage("<li>メンバーを追加開いてださい。</li>");
+    showMessage("<li>メンバーを追加してください。</li>");
     return;
   }
   // 不参加者リスト表示
