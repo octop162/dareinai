@@ -19,24 +19,22 @@ $(function () {
 
 /**
  * 現参加者取得完了後、不参加者のリストを表示する
- * @param {array} response
+ * @param {array} members
  * @returns
  */
-function showAbsentees(membersObject) {
+function showAbsentees(members) {
   // エラー処理
-  if (membersObject === undefined) {
+  if (members === undefined) {
     showMessage("<li>meetのURLで実行してください。</li>");
     return;
   }
   // メンバー取得
-  let members = Object.values(membersObject);
   if (members.length == 0) {
     showMessage("<li>ユーザーを開いてださい。</li>");
     return;
   }
   // 現参加者取得
   let participants = $("#participants").val().split("\n");
-  console.dir(participants);
   if (participants.length === 0 || participants[0] === "") {
     showMessage("<li>メンバーを追加してください。</li>");
     return;
