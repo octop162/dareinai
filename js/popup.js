@@ -15,6 +15,14 @@ $(function () {
   $("#save").on("click", function () {
     saveMembersList($("#participants").val());
   });
+
+  // メンバーをコピーする
+  $("#copy").on("click", function () {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: "GET_MEMBERS" }, copyAbsentees);
+    });
+  });
+
 });
 
 /**
@@ -139,4 +147,25 @@ function isMeetURL(url) {
   let meet_id = url.split("/")[3];
   let isMeetURL = domain === MEET_DOMAIN && meet_id !== "";
   return isMeetURL;
+}
+
+/**
+ * メンバーリストをコピーする
+ * @param {array} members
+ * @returns
+ */
+function copyAbsentees(members) {
+  // エラー処理
+  if (members === undefined) {
+    showMessage("<li>meetのURLで実行してください。</li>");
+    return;
+  }
+  // メンバー取得
+  if (members.length == 0) {
+    showMessage("<li>ユーザーを開いてださい。</li>");
+    return;
+  }
+  // クリップボードにコピー
+  navigator.clipboard.writeText(members.join("\n"));
+  showMessage("<li>コピー完了しました。</li>");
 }
